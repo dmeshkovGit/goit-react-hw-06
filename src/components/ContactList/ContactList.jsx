@@ -9,10 +9,22 @@ import { selectNameFilter } from '../../redux/filtersSlice'
 export default function ContactList({  }) {
     const filter = useSelector(selectNameFilter);
     const contacts = useSelector(selectContacts)
-    const visibleContacts = contacts.filter((contact) => contact.name.toLowerCase().includes(filter.toLowerCase()))
+    const filteredContacts = contacts.filter((contact) => contact.name.toLowerCase().includes(filter.toLowerCase()));
+    const sortedContacts = filteredContacts.sort((a, b) =>{ 
+    const nameA = a.name.toUpperCase(); 
+    const nameB = b.name.toUpperCase(); 
+    if (nameA < nameB) {
+    return -1;
+    }
+    if (nameA > nameB) {
+    return 1;
+    }
+    return 0;
+    });
+
     return (
         <ul className={css.contactsList}>
-            {visibleContacts.map((contact) => {
+            {sortedContacts.map((contact) => {
                 return <li key={contact.id}>
                     <Contact contact={contact}/>
              </li>
